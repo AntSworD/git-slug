@@ -1,0 +1,8 @@
+node_modules
+doc
+coverage
+mochawesome-reports
+temp
+*.log
+.idea
+config/local.json
