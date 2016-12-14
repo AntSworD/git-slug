@@ -5,7 +5,6 @@ const resolvePath = require('path').resolve;
 
 module.exports = (path, remote = 'origin') => {
   return Promise.resolve().then(() => {
-    console.log(path);
     path = resolvePath(path);
 
     let gitRemoteArgs = ['remote', 'show', '-n', remote];
