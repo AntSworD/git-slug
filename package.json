@@ -1,6 +1,6 @@
 {
   "name": "git-slug",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "get git remote slug",
   "main": "index.js",
   "scripts": {

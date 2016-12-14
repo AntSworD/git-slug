@@ -9,10 +9,10 @@ module.exports = (path, remote = 'origin') => {
 
     let gitRemoteArgs = ['remote', 'show', '-n', remote];
     let gitBranchArgs = ['branch', '-vv'];
-    let matchFetch = /Fetch URL: git@([^:]*):([^\/]*)\/(.+).git/;
+    let matchFetch = /Fetch URL: (.+)/;
     // * master 234872 [origin/master] commit message
     // 匹配出 branch
-    let matchBranch = /\*\s+(.+)\s+.+\s+\[(.+)\/(.+)\]\s+.+/;
+    let matchBranch = /\*\s+(.+)\s+.+\s+\[(.+)\/([^\:]+).*\]\s+.+/;
 
     let getRemoteInfo = new Promise((resolve, reject) => {
         exec('git', gitRemoteArgs, {cwd: path}, function (err, stdout) {
@@ -20,7 +20,10 @@ module.exports = (path, remote = 'origin') => {
           if (!err && stdout) {
             let remoteMatch = matchFetch.exec(stdout.toString());
 
-            if (remoteMatch) return resolve(remoteMatch.slice(1));
+            if (remoteMatch) {
+              let result = parseUrl(remoteMatch[1].trim());
+              if (result) return resolve(result);
+            };
 
             return reject(new Error('Not a available GIT remote URL'));
           } else {
@@ -63,3 +66,16 @@ module.exports = (path, remote = 'origin') => {
     throw e;
   });
 };
+
+let parseUrl = (gitUrl) => {
+  let matchGitUrl = /^(?:https?:\/\/|git:\/\/|git\+ssh:\/\/|git\+https:\/\/)?(?:[^@]+@)?([^\/]+)(?::\/?|\/)([^/]+\/[^/]+?|[0-9]+)$/;
+  let matchOwnerRepo = /^([^\/]+)\/([^\/]+)/;
+
+  let matchGit = matchGitUrl.exec(gitUrl.replace(/\.git(#.*)?$/, ''));
+  if (!matchGit) return null;
+
+  let matchRepo = matchOwnerRepo.exec(matchGit[2]);
+  if (!matchRepo) return null;
+
+  return [matchGit[1]].concat(matchRepo.slice(1));
+}
