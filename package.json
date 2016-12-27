@@ -1,6 +1,6 @@
 {
   "name": "git-slug",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "get git remote slug",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/AntSworD/git-slug.git"
   },
-  "engines": { "node" : ">=6.2.2" },
+  "engines": {
+    "node": ">=6.2.2"
+  },
   "engineStrict": true,
   "keywords": [
     "git",
