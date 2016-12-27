@@ -12,7 +12,7 @@ module.exports = (path, remote = 'origin') => {
     let matchFetch = /Fetch URL: (.+)/;
     // * master 234872 [origin/master] commit message
     // 匹配出 branch
-    let matchBranch = /\*\s+(.+)\s+.+\s+\[(.+)\/([^\:]+).*\]\s+.+/;
+    let matchBranch = /\*\s+([^\s]+)\s+.+\s+\[([^\s]+)\/([^\:]+).*\]\s+.+/;
 
     let getRemoteInfo = new Promise((resolve, reject) => {
         exec('git', gitRemoteArgs, {cwd: path}, function (err, stdout) {
